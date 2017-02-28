@@ -6,12 +6,15 @@
 int main()
 {
     int data_processed;
-    int file_pipes[2];
+
+	//用于存放通过pipe()打开的文件描述符.file_pipes[0]对应读,file_pipes[1]对应写.
+    int file_pipes[2]; 
     const char some_data[] = "123";
     char buffer[BUFSIZ + 1];
 
     memset(buffer, '\0', sizeof(buffer));
 
+	//创建管道--它生成两个文件描述符,file_pipes[0]对应读,file_pipes[1]对应写:
     if (pipe(file_pipes) == 0) {
         data_processed = write(file_pipes[1], some_data, strlen(some_data));
         printf("Wrote %d bytes\n", data_processed);

@@ -13,7 +13,7 @@ int main()
     int times_to_send;
     char client_fifo[256];
 
-    server_fifo_fd = open(SERVER_FIFO_NAME, O_WRONLY);
+    server_fifo_fd = open(SERVER_FIFO_NAME, O_WRONLY);//以只写方式打开SERVER_FIFO_NAME管道
     if (server_fifo_fd == -1) {
         fprintf(stderr, "Sorry, no server\n");
         exit(EXIT_FAILURE);
@@ -21,7 +21,7 @@ int main()
 
     my_data.client_pid = getpid();
     sprintf(client_fifo, CLIENT_FIFO_NAME, my_data.client_pid);
-    if (mkfifo(client_fifo, 0777) == -1) {
+    if (mkfifo(client_fifo, 0777) == -1) {//创建server到client的数据传递的管道。
         fprintf(stderr, "Sorry, can't make %s\n", client_fifo);
         exit(EXIT_FAILURE);
     }
@@ -31,7 +31,7 @@ int main()
 // Finally, the server FIFO is closed and the client FIFO removed from memory.
 
     for (times_to_send = 0; times_to_send < 5; times_to_send++) {
-        sprintf(my_data.some_data, "Hello from %d", my_data.client_pid); 
+        sprintf(my_data.some_data, "Hello from %d", my_data.client_pid);
         printf("%d sent %s, ", my_data.client_pid, my_data.some_data);
         write(server_fifo_fd, &my_data, sizeof(my_data));
         client_fifo_fd = open(client_fifo, O_RDONLY);
@@ -43,7 +43,7 @@ int main()
         }
     }
     close(server_fifo_fd);
-    unlink(client_fifo);
+    unlink(client_fifo); //删除server到client的数据传递的管道。
     exit(EXIT_SUCCESS);
 }
 

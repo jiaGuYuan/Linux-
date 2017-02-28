@@ -23,9 +23,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-// Assuming that the program passed the test, we now set the value of open_mode
-// from those arguments.
-
+	//根据传入的参数设置open_mode
     for(i = 1; i < argc; i++) {
         if (strncmp(*++argv, "O_RDONLY", 8) == 0)
              open_mode |= O_RDONLY;
@@ -35,10 +33,7 @@ int main(int argc, char *argv[])
              open_mode |= O_NONBLOCK;
      }
 
-// We now check whether the FIFO exists and create it if necessary.
-// Then the FIFO is opened and output given to that effect while the program
-// catches forty winks. Last of all, the FIFO is closed.
-
+	// 检查FIFO是否存在,如果不存在就创建它
     if (access(FIFO_NAME, F_OK) == -1) {
         res = mkfifo(FIFO_NAME, 0777);
         if (res != 0) {
@@ -48,10 +43,10 @@ int main(int argc, char *argv[])
     }
 
     printf("Process %d opening FIFO\n", getpid());
-    res = open(FIFO_NAME, open_mode);
+    res = open(FIFO_NAME, open_mode); //打开FIFO
     printf("Process %d result %d\n", getpid(), res);
     sleep(5);
-    if (res != -1) (void)close(res);
+    if (res != -1) (void)close(res); //关闭FIFO
     printf("Process %d finished\n", getpid());
     exit(EXIT_SUCCESS);
 }

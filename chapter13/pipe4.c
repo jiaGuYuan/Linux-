@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     int file_descriptor;
 
     memset(buffer, '\0', sizeof(buffer));
-    sscanf(argv[1], "%d", &file_descriptor);
+    sscanf(argv[1], "%d", &file_descriptor); //获取参数中传递过来的管道文件的读描述符
     data_processed = read(file_descriptor, buffer, BUFSIZ);
 
     printf("%d - read %d bytes: %s\n", getpid(), data_processed, buffer);

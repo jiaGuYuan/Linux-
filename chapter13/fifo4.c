@@ -7,7 +7,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#define FIFO_NAME "/tmp/my_fifo"
+#define FIFO_NAME "./my_fifo"
 #define BUFFER_SIZE PIPE_BUF
 
 int main()
@@ -21,14 +21,16 @@ int main()
     memset(buffer, '\0', sizeof(buffer));
     
     printf("Process %d opening FIFO O_RDONLY\n", getpid());
-    pipe_fd = open(FIFO_NAME, open_mode);
+    pipe_fd = open(FIFO_NAME, open_mode);//以只读(open_mode=O_RDONLY)的方式打开管道文件
     printf("Process %d result %d\n", getpid(), pipe_fd);
 
     if (pipe_fd != -1) {
+		//循环读取数据，直到将要数据全部读出:只演示,并没有处理读出的数据
         do {
             res = read(pipe_fd, buffer, BUFFER_SIZE);
             bytes_read += res;
         } while (res > 0);
+		
         (void)close(pipe_fd);
     }
     else {

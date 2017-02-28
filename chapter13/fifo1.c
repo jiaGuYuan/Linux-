@@ -6,7 +6,8 @@
 
 int main()
 {
-    int res = mkfifo("/tmp/my_fifo", 0777);
+	//创建有名管道文件,并设置权限
+    int res = mkfifo("./my_fifo", 0777);
     if (res == 0)
         printf("FIFO created\n");
     exit(EXIT_SUCCESS);
